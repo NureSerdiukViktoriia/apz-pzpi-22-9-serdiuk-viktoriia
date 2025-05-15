@@ -92,7 +92,7 @@ o	Переваги та недоліки Chain Responsibility;
 
 ДОДАТОК А
 Відеозапис доповіді на YouTube: https://youtu.be/CXelTLCUNLc
-Посилання на GitHub: https://github.com/NureSerdiukViktoriia/apz-pzpi-22-9-serdiuk-viktoriia/tree/main/Pract1
+Посилання на GitHub: https://github.com/NureSerdiukViktoriia/apz-pzpi-22-9-serdiuk-viktoriia/tree/main
 
 Хронологічний опис доповіді:
 0:00 Вступ 
