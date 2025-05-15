@@ -1,0 +1,252 @@
+Міністерство освіти і науки України
+Харківський національний університет радіоелектроніки
+
+Кафедра програмної інженерії
+
+
+
+
+
+
+
+
+
+
+ЗВІТ
+з практичної роботи №1
+
+
+
+
+
+
+
+
+
+
+
+
+Виконала:                                                                                         Перевірив:               
+ст. гр. ПЗПІ-22-9                                                                              Сокорчук І. П.
+Сердюк В. С.
+
+
+
+
+
+
+
+
+
+
+Харків 2025
+ПРАКТИЧНЕ ЗАНЯТТЯ №1 “ПАТЕРН ПРОЄКТУВАННЯ ПЗ”
+
+1 ІСТОРІЯ ЗМІН
+Таблиця 1.1 – Історія змін
+№	Дата	Версія звіту	Опис змін та виправлень
+1	23.04.2025	0.1	Створено звіт, додано розділ “Завдання”.
+
+2 ЗАВДАННЯ
+Завдання на практичне заняття 1 (ПЗ1):
+1.	Підготувати доповідь на тему: «Шаблон (патерн) проєктування ПЗ»
+(із книг: Ґамма, “ООП. Патерни проєктування”, GoF, крім патерна Singletone);
+2.	Створити та оформити слайди презентації доповіді;
+3.	Створити та опублікувати на YouTube відеозапис доповіді;
+4.	Оформити та завантажити на dl.nure.ua звіт до виконаної роботи;
+5.	При потребі створити та налаштувати у GitHub обліковий запис для облікового запису студента в домені @nure.ua;
+6.	Створити для виконання завдань з дисципліни GitHub репозиторій iз вказаним на https://dl.nure.ua іменем та з головною гілкою main;
+7.	Створити у корені створеного репозиторію файл README.md з вказаним далі змістом та вказані далі директорії для окремих завдань;
+8.	Експортувати звіт у файл у простому текстововому форматі та завантажити цей файл у директорію Pract1 у репозиторії GitHub;
+9.	Завантажити у вказану далі піддиректорію увесь програмний код, який розглядається у доповіді ПЗ1;
+
+3 ОПИС ВИКОНАНОЇ РОБОТИ
+•	Було обрано мову програмування C#; 
+•	Підготовлено презентацію з інформацією про:
+o	Поведінкові патерни;
+o	Chain Responsibility та приклад його використання; 
+o	Переваги та недоліки Chain Responsibility;
+•	Підготовлено звіт;
+•	Посилання на відеозапис доповіді на YouTube та GitHub додаються у додатку А;
+•	Скриншоти презентації додаються у додатку Б;
+•	Приклад програмного коду додаються у додатку В.
+
+4 ВИСНОВКИ
+У ході виконання роботи було розглянуто патерн проєктування “Ланцюжок відповідальностей”, його призначення, принцип дії та сфери застосування. Було проаналізовано його переваги, зокрема гнучкість, спрощення підтримки та зменшення залежностей між об’єктами. Завдяки цим властивостям патерн є ефективним рішенням для організації обробки запитів у складних програмних системах.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ДОДАТОК А
+Відеозапис доповіді на YouTube: https://youtu.be/CXelTLCUNLc
+Посилання на GitHub: https://github.com/NureSerdiukViktoriia/apz-pzpi-22-9-serdiuk-viktoriia/tree/main/Pract1
+
+Хронологічний опис доповіді:
+0:00 Вступ 
+1:05 Поведінкові патерни 
+1:35 Chain of Responsibility 
+2:45 Chain of Responsibility: приклад використання 
+3:23 Chain of Responsibility: результат використання 
+4:09 Переваги та недоліки 
+5:57 Висновок 
+6:40 Список використаних джерел
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ДОДАТОК Б
+Слайди презентації
+ 
+Рисунок Б.1 – Титульний слайд презентації
+
+ 
+Рисунок Б.2 – Зміст презентації
+
+ 
+Рисунок Б.3 – Слайд з вступом до презентації
+
+ 
+Рисунок Б.4 – Поведінкові патерни
+
+
+
+
+ 
+Рисунок Б.5 – Chain of Responsibility
+
+ 
+Рисунок Б.6 – Chain of Responsibility приклад використання
+
+
+
+
+ 
+Рисунок Б.7 – Chain of Responsibility результат використання
+
+ 
+Рисунок Б.8 – Chain of Responsibility переваги та недоліки
+
+ 
+Рисунок Б.9 – Слайд з висновком до презентації
+
+ 
+Рисунок Б.10 – Список використаних джерел
+
+
+
+
+ДОДАТОК В
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace UserType
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            UserHandler userHandler = new UserRoleHandler();
+            UserHandler managerHandler = new ManagerRoleHandler();
+            UserHandler administratorRoleHandler = new AdministratorRoleHandler();
+
+            userHandler.SetNextHandler(managerHandler);
+            managerHandler.SetNextHandler(administratorRoleHandler);
+
+            User user1 = new User("User");
+            User user2 = new User("Manager");
+            User user3 = new User("Administrator");
+
+            userHandler.Handle(user1);
+            userHandler.Handle(user2);
+            userHandler.Handle(user3);
+        }
+    }
+
+    public class User
+    {
+        public string Role { get; set; }
+        public User(string role) { Role = role; }
+    }
+
+   public abstract class UserHandler
+    {
+        protected UserHandler nextHandler;
+        public void SetNextHandler(UserHandler nextHandler)
+        {
+            this.nextHandler = nextHandler;
+        }
+        public abstract void Handle(User user);
+    }
+
+    public class UserRoleHandler : UserHandler
+    {
+        public override void Handle(User user)
+        {
+            if (user.Role == "User")
+            {
+                Console.WriteLine("User processing request");
+            }
+            else if (nextHandler != null)
+            {
+                nextHandler.Handle(user);
+            }
+        }
+    }
+
+    public class ManagerRoleHandler : UserHandler
+    {
+        public override void Handle(User user)
+        {
+            if (user.Role == "Manager")
+            {
+                Console.WriteLine("Manager processing request");
+            }
+            else if (nextHandler != null)
+            {
+                nextHandler.Handle(user);
+            }
+        }
+    }
+
+    public class AdministratorRoleHandler : UserHandler
+    {
+        public override void Handle(User user)
+        {
+            if (user.Role == "Administrator")
+            {
+                Console.WriteLine("Administrator processing request");
+            }
+            else if (nextHandler != null)
+            {
+                nextHandler.Handle(user);
+            }
+        }
+    }
+}
