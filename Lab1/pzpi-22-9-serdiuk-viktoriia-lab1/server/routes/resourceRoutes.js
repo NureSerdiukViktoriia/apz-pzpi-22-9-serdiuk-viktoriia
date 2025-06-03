@@ -1,0 +1,11 @@
+const express = require("express");
+const resourceController = require("../controllers/resourceController");
+const userController = require("../controllers/userController");
+const router = express.Router();
+router.post("/", userController.authorize(["admin"]), resourceController.createResource);
+router.get("/", userController.authorize(["admin", "user"]), resourceController.getAllResources);
+router.put("/:id", userController.authorize(["admin"]), resourceController.updateResource);
+router.delete("/:id", userController.authorize(["admin"]), resourceController.deleteResource);
+router.get("/getWater", userController.authorize(["admin"]), resourceController.getWater);
+router.get("/getElectricity", userController.authorize(["admin"]), resourceController.getElectricity);
+module.exports = router;
