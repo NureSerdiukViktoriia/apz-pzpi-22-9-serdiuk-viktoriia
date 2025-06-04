@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">CampingApp</string>
+    <string name="welcome">Welcome</string>
+    <string name="auth_button">Log in</string>
+    <string name="in_system">You are logged in</string>
+    <string name="next">Next</string>
+    <string name="authorization_repeat_password">Repeat password</string>
+    <string name="authorization_repeat_password_label">Repeat Password</string>
+    <string name="authorization_logout">Log out</string>
+    <string name="authorization_password_match_error">Passwords do not match</string>
+    <string name="network_error">Network error</string>
+    <string name="authorization_email_error">Enter email</string>
+    <string name="authorization_password_error">Enter password</string>
+    <string name="verification_failed">Verification error. Try again</string>
+    <string name="register_button">Зареєструватися</string>
+
+</resources>
