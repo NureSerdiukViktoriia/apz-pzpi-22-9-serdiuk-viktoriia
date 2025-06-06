@@ -1,0 +1,11 @@
+const express = require("express");
+const upload = require("../middlewares/upload");
+const locationController = require("../controllers/locationController");
+const userController = require("../controllers/userController");
+const router = express.Router();
+router.post("/", userController.authorize(["admin"]), upload.single("image"), locationController.createLocation);
+router.get("/", userController.authorize(["admin", "user"]), locationController.getAllLocations);
+router.get("/:id", userController.authorize(["admin", "user"]), locationController.getLocationById);
+router.put("/:id", userController.authorize(["admin"]), upload.single("image"), locationController.updateLocation);
+router.delete("/:id", userController.authorize(["admin"]), locationController.deleteLocation);
+module.exports = router;

@@ -1,0 +1,156 @@
+.location-details-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.location-details-container img {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.location-details-container h2 {
+  text-align: center;
+}
+
+.location-details-container h3 {
+  margin-top: 32px;
+}
+
+.location-details-container ul {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.location-details-container p {
+  line-height: 1.4;
+}
+.back-button {
+  background-color: #ffffff;
+  border: none;
+  padding: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+}
+
+.back-button img {
+  width: 30px;
+  height: 30px;
+}
+
+.location-details-container > button {
+  background-color: #2a7f62;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto 0 auto;
+  width: 180px;
+  text-align: center;
+}
+
+.location-details-container form {
+  margin-top: 20px;
+  max-width: 500px;
+
+  border-radius: 8px;
+}
+
+.location-details-container form div {
+  margin-bottom: 16px;
+}
+
+.location-details-container form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+.location-details-container form select {
+  width: 100%;
+  max-width: 130px;
+  padding: 8px 10px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 0 0 10px;
+}
+.location-details-container form textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  resize: vertical;
+}
+.location-details-container form textarea:focus {
+  outline: none;
+}
+.location-details-container form input[type="date"] {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.location-details-container form button[type="submit"],
+.location-details-container form button[type="button"] {
+  background-color: #2a7f62;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 12px;
+}
+
+.location-details-container form button[type="button"] {
+  background-color: #cd3c34;
+}
+
+.location-details-all-reviews {
+  text-align: center;
+}
+.location-details-container ul li {
+  margin-bottom: 30px;
+}
+.location-details-container ul li > div button {
+  background-color: #2a7f62;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.location-details-container ul li > div button:last-child {
+  background-color: #cd3c34;
+  padding: 6px 14px;
+  font-size: 13px;
+}
+hr {
+  border: none;
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px 0;
+}
