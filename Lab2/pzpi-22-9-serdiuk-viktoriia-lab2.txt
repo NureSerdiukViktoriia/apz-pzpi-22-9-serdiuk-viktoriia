@@ -1,0 +1,197 @@
+Міністерство освіти і науки України
+Харківський національний університет радіоелектроніки
+
+Кафедра програмної інженерії
+
+
+
+
+
+
+
+
+
+
+ЗВІТ
+з лабораторної роботи №2
+
+
+
+
+
+
+
+
+
+
+
+
+Виконала:                                                                                        Перевірив:               
+ст. гр. ПЗПІ-22-9                                                                             Дашенков Д. С.
+Сердюк В. С.
+
+
+
+
+
+
+
+
+
+
+Харків 2025
+ЛАБОРАТОРНА РОБОТА 2 — МОБІЛЬНИЙ ЗАСТОСУНОК
+
+Мета роботи: Розробити мобільний застосунок.
+
+Прийняті інженерні рішення та взаємодії компонентів мобільного застосунку: 
+Для розробки мобільного застосунку використала Kotlin. Бекенд реалізувала на Node.js з використанням Express.js для ефективної обробки HTTP-запитів. За допомогою SQLite у поєднанні з ORM Sequelize здійснюється збереження даних, що спрощує роботу з базою даних. Взаємодію між фронтендом і бекендом організувала через REST API, а для безпечного доступу до захищених ресурсів впровадила аутентифікацію користувачів за допомогою JSON Web Tokens (JWT).
+
+ 
+Рисунок 1. - UML діаграма прецедентів
+
+ 
+Рисунок 2. - UML діаграма компонентів
+
+ 
+Рисунок 3. - ER-модель даних мобільної платформи
+
+ 
+Рисунок 4. - UML діаграма пакетів
+
+Весь код проєкту зберігається в репозиторії Git - https://github.com/NureSerdiukViktoriia/apz-pzpi-22-9-serdiuk-viktoriia/tree/main/Lab2 
+
+Мобільний застосунок:
+
+ 
+Рисунок 5. – Сторінка реєстрації
+  
+Рисунок 6. – Сторінка входу
+ 
+Рисунок 7. – Головна сторінка
+  
+Рисунок 8. – Сторінка профілю
+ 
+Рисунок 9. – Редагування особистої інформації
+ 
+Рисунок 10. – Сторінка локації
+ 
+Рисунок 11. – Бронювання локації
+ 
+Рисунок 12. – Форма додавання відгука
+ 
+Рисунок 12. – Перегляд нового відгука
+ 
+Рисунок 13. – Форма редагування відгука
+Навігація мобільного застосунку:
+@Composable
+fun NavigationGraph(navController: NavHostController, apiService: ApiService) {
+    NavHost(navController = navController, startDestination = "register") {
+        composable("register") {
+            AppBackground {
+                RegistrationScreen(navController = navController, apiService = apiService)
+            }
+        }
+        composable("auth") { AppBackground { AuthorizationScreen(navController = navController) } }
+
+        composable("home") {
+            AppBackground {
+                val context = LocalContext.current
+                HomeScreen(navController = navController, context = context)
+            }
+        }
+        composable("profile") { AppBackground { ProfileScreen(navController = navController) } }
+
+        composable(
+            route = "locationDetails/{locationId}",
+            arguments = listOf(navArgument("locationId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val locationId = backStackEntry.arguments?.getInt("locationId") ?: -1
+            AppBackground { LocationDetailsScreen(locationId = locationId) }
+        }
+    }
+}
+
+Опис коду: 
+У файлі NavigationGraph.kt зробила навігацію між основними екранами мобільного застосунку: реєстрація, вхід, головна сторінка, профіль та деталі локації. Для цього використовувала NavHost, який керує переходами між екранами, передаючи необхідні параметри.
+Ініціалізація API-з'єднання з сервером:
+object RetrofitInstance {
+    private const val BASE_URL = "http://192.168.0.103:5000/api/"
+    private var retrofit: Retrofit? = null
+    fun getApiService(context: Context): ApiService {
+        if (retrofit == null) {
+            val client = OkHttpClient.Builder()
+                .addInterceptor(AuthInterceptor(context))
+                .build()
+
+            retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+        return retrofit!!.create(ApiService::class.java)
+    }
+}
+
+Опис коду:
+Налаштовую Retrofit для обміну даними між мобільним застосунком і сервером. Вказую адресу сервера, додаю механізм автоматичного додавання токена авторизації до запитів, а також використовую конвертер для зручної роботи з JSON.
+
+Інтерфейс взаємодії з сервером (ApiService):
+interface ApiService {
+    @POST("users/login")
+    suspend fun login(@Body user: User): LoginResponse
+
+    @POST("users")
+    suspend fun registerUser(@Body request: RegistrationRequest): Response<Unit>
+
+    @GET("locations")
+    suspend fun getAllLocations(): List<Location>
+
+    @GET("users/{id}")
+    suspend fun getUser(@Path("id") id: String): UserData
+
+    @PUT("users/{id}")
+    suspend fun updateUser(@Path("id") id: String, @Body userData: UserData): Response<Unit>
+
+    @DELETE("users/{id}")
+    suspend fun deleteUser(@Path("id") id: String): Response<Unit>
+
+    @GET("locations/{id}")
+    suspend fun getLocation(@Path("id") locationId: Int): Location
+
+    @POST("bookings")
+    suspend fun createBookings(
+        @Header("Authorization") token: String,
+        @Body bookingRequest: Booking
+    ): Response<BookingResponse>
+
+    @POST("reviews")
+    suspend fun createReview(
+        @Header("Authorization") token: String,
+        @Body reviewRequest: ReviewRequest
+    ): Response<Review>
+
+    @GET("reviews/location/{locationId}")
+    suspend fun getReviewsByLocationId(
+        @Path("locationId") locationId: Int
+    ): Response<List<Review>>
+
+    @PUT("reviews/{id}")
+    suspend fun updateReview(
+        @Header("Authorization") authHeader: String,
+        @Path("id") reviewId: Int,
+        @Body reviewRequest: ReviewRequest
+    ): Response<Review>
+
+    @DELETE("reviews/{id}")
+    suspend fun deleteReview(
+        @Header("Authorization") authHeader: String,
+        @Path("id") reviewId: Int
+    ): Response<Unit>
+}
+
+Опис коду: 
+У ApiService визначаю набір HTTP-запитів, які мобільний застосунок надсилає до сервера. За допомогою @GET, @POST, @PUT та @DELETE описала функції для реєстрації, входу користувача, отримання інформації про локації, користувачів, бронювання, відгуки, а також їхнє оновлення та видалення.
+
+Висновок: Було розроблено мобільний застосунок з Kotlin.
